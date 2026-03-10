@@ -10,8 +10,9 @@ import SearchDonor from "./pages/SearchDonor"
 // import RequestBlood from "./pages/RequestBlood"
 import RequestDonor from "./components/RequestDonor"
 import EmergencyRequests from "./components/EmergencyRequest"
-// import Dashboard from "./pages/Dashboard"
-// import About from "./pages/About"
+import Dashboard from "./pages/Dashboard"
+import About from "./pages/About"
+import Footer from "./components/Footer"
 
 function App() {
 
@@ -28,7 +29,8 @@ function App() {
 
         {/* Public Routes */}
 
-        <Route path="/" element={<Home />} />
+        <Route path="/lifeline" element={<Home />} />
+         <Route path="/" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
 
@@ -37,7 +39,7 @@ function App() {
          <Route path="/search" element={<SearchDonor />} />
          <Route path="/requests" element={<EmergencyRequests/>}/>
 
-       {/* <Route path="/about" element={<About />} /> */}
+       <Route path="/about" element={<About />} />
 
 
         {/* Protected Routes */}
@@ -51,16 +53,17 @@ function App() {
           }
         />
 
-        {/* <Route
-          path="/dashboard"
+        <Route
+          path="/lifeline/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
       </Routes>
+      <Footer  />
 
     </div>
 

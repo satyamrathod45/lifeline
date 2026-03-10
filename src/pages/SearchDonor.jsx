@@ -9,6 +9,7 @@ import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 
 
+
 function createBloodMarker(group){
 
 return new L.DivIcon({
@@ -16,8 +17,6 @@ return new L.DivIcon({
 className:"",
 
 html:`
-<div class="blood-marker">
-
 <div style="
 background:#ef4444;
 color:white;
@@ -31,11 +30,7 @@ font-weight:bold;
 font-size:12px;
 box-shadow:0 4px 10px rgba(0,0,0,0.25);
 ">
-
 ${group}
-
-</div>
-
 </div>
 `,
 
@@ -48,11 +43,10 @@ iconAnchor:[19,19]
 
 
 const userIcon = new L.Icon({
-
 iconUrl:"https://cdn-icons-png.flaticon.com/512/684/684908.png",
 iconSize:[35,35]
-
 })
+
 
 
 export default function SearchDonor(){
@@ -61,6 +55,7 @@ const [bloodGroup,setBloodGroup]=useState("")
 const [city,setCity]=useState("")
 const [lat,setLat]=useState(null)
 const [lng,setLng]=useState(null)
+const [locationName,setLocationName]=useState("")
 
 const [donors,setDonors]=useState([])
 const [loading,setLoading]=useState(false)
@@ -74,7 +69,7 @@ const detectLocation=()=>{
 
 navigator.geolocation.getCurrentPosition(
 
-(position)=>{
+async (position)=>{
 
 const latitude=position.coords.latitude
 const longitude=position.coords.longitude
@@ -82,7 +77,28 @@ const longitude=position.coords.longitude
 setLat(latitude)
 setLng(longitude)
 
+try{
+
+const res = await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+)
+
+const data = await res.json()
+
+setLocationName(
+data.address.city ||
+data.address.town ||
+data.address.village ||
+"Location detected"
+)
+
 toast.success("Location detected")
+
+}catch{
+
+setLocationName("Location detected")
+
+}
 
 },
 
@@ -121,7 +137,7 @@ city
 
 setDonors(res.data.donors)
 
-}catch(err){
+}catch{
 
 toast.error("Error fetching donors")
 
@@ -148,17 +164,35 @@ className="min-h-screen bg-[#F7EFEA] px-4 md:px-8 py-10 relative overflow-hidden
 
 
 
-<motion.h1
-initial={{opacity:0,y:-20}}
-animate={{opacity:1,y:0}}
-className="text-4xl md:text-5xl font-bold text-center mb-10 text-gray-800"
->
+{/* HERO */}
+
+<div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between mb-10">
+
+<div>
+
+<h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">
 Find Blood Donors
-</motion.h1>
+</h1>
+
+<p className="text-gray-600 max-w-md">
+Locate nearby blood donors quickly during emergencies.
+Every second matters when saving a life.
+</p>
+
+</div>
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+className="w-44 mt-6 md:mt-0"
+/>
+
+</div>
 
 
 
-<div className="bg-white max-w-5xl mx-auto p-6 rounded-2xl shadow-xl mb-10">
+{/* SEARCH PANEL */}
+
+<div className="bg-white/80 backdrop-blur-lg max-w-5xl mx-auto p-6 rounded-2xl shadow-xl mb-8">
 
 <div className="flex flex-wrap justify-center gap-4">
 
@@ -217,6 +251,30 @@ Search
 
 
 
+{/* LOCATION DISPLAY */}
+
+{locationName &&(
+
+<motion.div
+initial={{opacity:0}}
+animate={{opacity:1}}
+className="text-center mb-6 text-gray-700"
+>
+
+📍 Detected Location:
+
+<span className="ml-2 font-semibold text-red-500">
+
+{locationName}
+
+</span>
+
+</motion.div>
+
+)}
+
+
+
 {loading &&(
 
 <p className="text-center text-gray-600 animate-pulse">
@@ -227,32 +285,29 @@ Searching donors...
 
 
 
+{/* MAP */}
+
 {showMap && lat && lng &&(
 
 <motion.div
 initial={{opacity:0}}
 animate={{opacity:1}}
-className="max-w-6xl mx-auto mb-10 rounded-2xl overflow-hidden shadow-xl"
+className="max-w-6xl mx-auto mb-10 rounded-3xl overflow-hidden shadow-2xl border"
 >
 
 <MapContainer
-
 key={`${lat}-${lng}`}
 center={[lat,lng]}
 zoom={13}
 style={{height:"420px",width:"100%"}}
-
 >
 
 <TileLayer
 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 />
 
-
 <Marker position={[lat,lng]} icon={userIcon}>
-
 <Popup>Your Location</Popup>
-
 </Marker>
 
 
@@ -299,74 +354,35 @@ Blood Group: {donor.bloodGroup}
 
 
 
+{/* DONOR CARDS */}
+
 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
 
 {donors.map((donor)=>(
 
 <motion.div
-
 key={donor._id}
-
-whileHover={{scale:1.07,rotate:-1}}
-whileTap={{scale:0.96}}
-
-initial={{opacity:0,y:40}}
-animate={{opacity:1,y:0}}
-
+whileHover={{scale:1.05}}
 className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl transition text-center border border-red-100"
-
 >
 
+<img
+src={`https://api.dicebear.com/7.x/initials/svg?seed=${donor.name}`}
+className="w-16 h-16 rounded-full shadow mx-auto mb-3"
+/>
 
-<motion.div
-animate={{y:[0,-8,0]}}
-transition={{repeat:Infinity,duration:2}}
-className="flex justify-center mb-4"
->
-
-<div className="bg-red-100 p-3 rounded-full shadow">
-
-<Droplet className="text-red-500"/>
-
-</div>
-
-</motion.div>
-
-
-<h2 className="font-bold text-lg text-gray-800">
-
-{donor.name}
-
-</h2>
-
-
-<p className="text-red-500 font-semibold mt-1">
-
+<span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
 {donor.bloodGroup}
-
-</p>
-
-
-<p className="flex justify-center items-center gap-2 text-gray-600 mt-2">
-
-<MapPin size={16}/>
-{donor.city}
-
-</p>
-
-
-<div className="flex justify-center mt-2">
-
-<span className="flex items-center gap-1 text-green-600 text-sm">
-
-<span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-
-Available
-
 </span>
 
-</div>
+<h2 className="font-semibold text-gray-800 mt-2">
+{donor.name}
+</h2>
 
+<p className="text-gray-500 text-sm flex items-center justify-center gap-1 mt-1">
+<MapPin size={14}/>
+{donor.city}
+</p>
 
 <button
 onClick={()=>setSelectedDonor(donor)}
@@ -377,7 +393,6 @@ Contact
 
 </button>
 
-
 </motion.div>
 
 ))}
@@ -386,73 +401,54 @@ Contact
 
 
 
+{/* CONTACT POPUP */}
+
 <AnimatePresence>
 
 {selectedDonor &&(
 
 <motion.div
-
 initial={{opacity:0}}
 animate={{opacity:1}}
 exit={{opacity:0}}
-
 className="fixed inset-0 bg-black/40 flex items-center justify-center z-[9999]"
-
 >
 
 <motion.div
-
 initial={{scale:0.8}}
 animate={{scale:1}}
 exit={{scale:0.8}}
-
 className="bg-white p-8 rounded-2xl shadow-xl w-[320px] text-center"
-
 >
 
 <h2 className="text-xl font-bold mb-3">
-
 {selectedDonor.name}
-
 </h2>
 
-
 <p className="text-red-500 font-semibold">
-
 {selectedDonor.bloodGroup}
-
 </p>
-
 
 <p className="flex justify-center items-center gap-2 text-gray-600 mt-2">
-
 <MapPin size={16}/>
 {selectedDonor.city}
-
 </p>
-
 
 {selectedDonor.phone &&(
 
 <p className="flex justify-center items-center gap-2 text-gray-700 mt-2">
-
 <Phone size={16}/>
 {selectedDonor.phone}
-
 </p>
 
 )}
-
 
 <button
 onClick={()=>setSelectedDonor(null)}
 className="mt-6 bg-red-500 text-white px-6 py-2 rounded-full hover:scale-105 transition"
 >
-
 Close
-
 </button>
-
 
 </motion.div>
 

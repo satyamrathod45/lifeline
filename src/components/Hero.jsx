@@ -5,7 +5,6 @@ export default function Hero() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 sm:gap-40 items-center h-screen overflow-hidden">
 
-      {/* Left Content */}
       <motion.div
         initial={{ opacity: 0, x: -60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -45,7 +44,6 @@ export default function Hero() {
       </motion.div>
 
 
-      {/* Right Image */}
 
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}

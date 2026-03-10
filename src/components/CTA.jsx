@@ -5,7 +5,6 @@ export default function CTA() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#E6485A] to-[#c81d3a] text-white py-24 px-6">
 
-      {/* Floating background blobs */}
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.2, scale: 1 }}
@@ -22,7 +21,6 @@ export default function CTA() {
 
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
 
-        {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -39,7 +37,6 @@ export default function CTA() {
             chapter of someone's life.
           </p>
 
-          {/* Feature icons */}
           <div className="flex gap-6 mb-10">
 
             <div className="flex items-center gap-2">
@@ -59,7 +56,6 @@ export default function CTA() {
 
           </div>
 
-          {/* CTA Button */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -70,7 +66,6 @@ export default function CTA() {
 
         </motion.div>
 
-        {/* Right Image */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -85,7 +80,6 @@ export default function CTA() {
             whileHover={{ scale: 1.05 }}
           />
 
-          {/* floating icon */}
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
