@@ -18,7 +18,7 @@ export default function Footer() {
         >
           <div className="flex items-center gap-2 text-2xl font-bold text-white mb-4">
             <Droplet className="text-red-400"/>
-            BloodLink
+            Lifeline
           </div>
 
           <p className="text-gray-400 text-sm max-w-xs">
