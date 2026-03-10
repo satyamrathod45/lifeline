@@ -105,11 +105,11 @@ active ? "w-full" : "w-0 group-hover:w-full"
 
 <User size={18}/>
 
-<span className="font-medium text-sm">
+<Link to={'/dashboard'} className="font-medium text-sm">
 
 {user.name}
 
-</span>
+</Link>
 
 </div>
 
