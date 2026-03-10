@@ -15,8 +15,66 @@ export default function Register() {
     bloodGroup:"",
     city:"",
     area:"",
-    coordinates:[79.0882,21.1458]
+    coordinates:[]
   })
+
+  const getLocation = async () => {
+
+    if(!navigator.geolocation){
+      alert("Geolocation not supported")
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+      async (position)=>{
+
+        const lat = position.coords.latitude
+        const lng = position.coords.longitude
+
+        try{
+
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+          )
+
+          const data = await res.json()
+
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            ""
+
+          const area =
+            data.address.suburb ||
+            data.address.neighbourhood ||
+            data.address.road ||
+            ""
+
+          setForm(prev => ({
+            ...prev,
+            coordinates:[lng,lat],
+            city: city,
+            area: area
+          }))
+
+          alert("Location captured 📍")
+
+        }catch(err){
+          console.log(err)
+          alert("Failed to detect address")
+        }
+
+      },
+
+      ()=>{
+        alert("Location permission denied")
+      }
+
+    )
+
+  }
 
   const handleSubmit = async(e)=>{
 
@@ -89,20 +147,31 @@ export default function Register() {
         <input
           placeholder="Blood Group"
           className="w-full border p-3 mb-3 rounded"
+          value={form.bloodGroup}
           onChange={(e)=>setForm({...form,bloodGroup:e.target.value})}
         />
 
         <input
           placeholder="City"
           className="w-full border p-3 mb-3 rounded"
+          value={form.city}
           onChange={(e)=>setForm({...form,city:e.target.value})}
         />
 
         <input
           placeholder="Area"
-          className="w-full border p-3 mb-4 rounded"
+          className="w-full border p-3 mb-3 rounded"
+          value={form.area}
           onChange={(e)=>setForm({...form,area:e.target.value})}
         />
+
+        <button
+          type="button"
+          onClick={getLocation}
+          className="w-full bg-blue-500 text-white py-2 rounded mb-3"
+        >
+          Detect My Location 📍
+        </button>
 
         <button className="w-full bg-red-600 text-white py-3 rounded-lg">
           Register
