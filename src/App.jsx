@@ -39,8 +39,8 @@ function App() {
         <Route path="/become-donor" element={<ProtectedRoute><BecomeDonor/></ProtectedRoute>}/>
 
          <Route path="/search" element={<SearchDonor />} />
-         <Route path="/requests" element={<RequestsDashboard/>}/>
-         <Route path="/request/:id" element={<RequestInfo/>}/>
+         <Route path="/requests" element={<ProtectedRoute><RequestsDashboard/></ProtectedRoute>}/>
+         <Route path="/request/:id" element={<ProtectedRoute><RequestInfo/></ProtectedRoute>}/>
 
        <Route path="/about" element={<About />} />
 
