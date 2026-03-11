@@ -1,7 +1,11 @@
 import { motion } from "framer-motion"
 import hero from "../assets/hero.png"
+import { useNavigate } from "react-router-dom"
 
 export default function Hero() {
+
+  const navigate = useNavigate()
+
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 sm:gap-40 items-center h-screen overflow-hidden">
 
@@ -23,17 +27,24 @@ export default function Hero() {
 
         <div className="flex flex-wrap gap-6 mt-8">
 
+          {/* FIND DONOR BUTTON */}
+
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
+            onClick={()=>navigate("/requests")}
             className="bg-red-600 text-white px-8 py-3 rounded-lg shadow-md"
           >
             Find Donor
           </motion.button>
 
+
+          {/* REQUEST BLOOD BUTTON */}
+
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
+            onClick={()=>navigate("/create-request")}
             className="border border-red-600 text-red-600 px-8 py-3 rounded-lg"
           >
             Request Blood
@@ -55,7 +66,7 @@ export default function Hero() {
         <motion.img
           src={hero}
           alt="Blood Donation Platform"
-           className="w-[450px] sm:w-[600px] md:w-[750px] lg:w-[800px] xl:w-[900px] max-w-[70vw]"
+          className="w-[450px] sm:w-[600px] md:w-[750px] lg:w-[800px] xl:w-[900px] max-w-[70vw]"
           
           animate={{ y: [0, -20, 0] }}
           transition={{
