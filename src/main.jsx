@@ -6,13 +6,13 @@ import { AuthProvider } from "./context/AuthContext"
 import App from './App.jsx'
 import { Toaster } from "react-hot-toast"
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <HashRouter>
       <AuthProvider>
       <App />
       <Toaster position="top-right" />
     </AuthProvider>
-  </BrowserRouter>,
+  </HashRouter>,
 )
