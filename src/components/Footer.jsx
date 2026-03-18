@@ -38,13 +38,13 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link to="/find-donor" className="hover:text-red-400 transition">
+              <Link to="/search" className="hover:text-red-400 transition">
                 Find Donor
               </Link>
             </li>
 
             <li>
-              <Link to="/emergency" className="hover:text-red-400 transition">
+              <Link to="/request" className="hover:text-red-400 transition">
                 Emergency Request
               </Link>
             </li>
