@@ -54,7 +54,7 @@ function MapUpdater({ setHospitals, setLoading }) {
   let timeout
 
   useMapEvents({
-    dragenda: (e) => {
+    dragend: (e) => {
 
       clearTimeout(timeout)
 
