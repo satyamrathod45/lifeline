@@ -32,7 +32,7 @@ export default function Hero() {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            onClick={()=>navigate("/requests")}
+            onClick={()=>navigate("/search")}
             className="bg-red-600 text-white px-8 py-3 rounded-lg shadow-md"
           >
             Find Donor
@@ -44,7 +44,7 @@ export default function Hero() {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            onClick={()=>navigate("/create-request")}
+            onClick={()=>navigate("/request")}
             className="border border-red-600 text-red-600 px-8 py-3 rounded-lg"
           >
             Request Blood
