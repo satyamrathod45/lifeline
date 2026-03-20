@@ -1,6 +1,7 @@
 import { useState } from "react"
 import api from "../services/api"
 import { useNavigate } from "react-router-dom"
+import bg from '../assets/image.png'
 
 export default function Register(){
 
@@ -112,166 +113,161 @@ export default function Register(){
   }
 
 
-  return(
+return (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-red-100 via-white to-blue-100 p-30  " >
 
-  <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="flex bg-white shadow-2xl rounded-2xl overflow-hidden w-[900px]">
 
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-8 rounded-xl shadow-md w-[420px]"
-    >
+      {/* LEFT SIDE IMAGE */}
+      <div className="w-1/2 hidden md:block">
+        <img
+          src={bg}
+          alt="blood donation"
+          className="h-full w-full object-cover"
+        />
+      </div>
 
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Register
-      </h2>
-
-
-      {/* ACCOUNT TYPE */}
-
-      <select
-        className="w-full border p-3 mb-3 rounded"
-        value={accountType}
-        onChange={(e)=>setAccountType(e.target.value)}
+      {/* FORM */}
+      <form
+        onSubmit={handleSubmit}
+        className="w-full md:w-1/2 p-8"
       >
 
-        <option value="user">User</option>
-        <option value="hospital">Hospital</option>
+        <h2 className="text-3xl font-bold mb-2 text-center text-red-600">
+          Register 🩸
+        </h2>
 
-      </select>
+        {/* 🔥 IMPORTANT NOTE */}
+        <p className="text-sm text-center text-gray-600 mb-4">
+          ⚠️ <span className="font-semibold text-red-500">
+          Location access is mandatory
+          </span> for successful registration (authenticity purpose)
+        </p>
 
-
-      {/* USER NAME OR HOSPITAL NAME */}
-
-      {accountType === "hospital" ? (
-
-        <input
-          placeholder="Hospital Name"
-          className="w-full border p-3 mb-3 rounded"
-          onChange={(e)=>setForm({...form,hospitalName:e.target.value})}
-        />
-
-      ) : (
-
-        <input
-          placeholder="Name"
-          className="w-full border p-3 mb-3 rounded"
-          onChange={(e)=>setForm({...form,name:e.target.value})}
-        />
-
-      )}
-
-
-      <input
-        placeholder="Phone"
-        className="w-full border p-3 mb-3 rounded"
-        onChange={(e)=>setForm({...form,phone:e.target.value})}
-      />
-
-
-      <input
-        placeholder="Email"
-        className="w-full border p-3 mb-3 rounded"
-        onChange={(e)=>setForm({...form,email:e.target.value})}
-      />
-
-
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full border p-3 mb-3 rounded"
-        onChange={(e)=>setForm({...form,password:e.target.value})}
-      />
-
-
-      {/* DONOR OPTION */}
-
-      {accountType === "user" && (
-
-        <label className="flex items-center gap-2 mb-3">
-
-          <input
-            type="checkbox"
-            checked={form.isDonor}
-            onChange={(e)=>setForm({...form,isDonor:e.target.checked})}
-          />
-
-          Become a Blood Donor 🩸
-
-        </label>
-
-      )}
-
-
-      {/* BLOOD GROUP */}
-
-      {form.isDonor && accountType === "user" && (
-
+        {/* ACCOUNT TYPE */}
         <select
-          className="w-full border p-3 mb-3 rounded"
-          onChange={(e)=>setForm({...form,bloodGroup:e.target.value})}
+          className="w-full border p-3 mb-3 rounded-lg focus:ring-2 focus:ring-red-400"
+          value={accountType}
+          onChange={(e)=>setAccountType(e.target.value)}
         >
-
-          <option value="">Blood Group</option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-          <option>O+</option>
-          <option>O-</option>
-
+          <option value="user">User</option>
+          <option value="hospital">Hospital</option>
         </select>
 
-      )}
-
-
-      {/* HOSPITAL LICENSE */}
-
-      {accountType === "hospital" && (
+        {/* NAME / HOSPITAL */}
+        {accountType === "hospital" ? (
+          <input
+            placeholder="Hospital Name"
+            className="w-full border p-3 mb-3 rounded-lg"
+            onChange={(e)=>setForm({...form,hospitalName:e.target.value})}
+          />
+        ) : (
+          <input
+            placeholder="Full Name"
+            className="w-full border p-3 mb-3 rounded-lg"
+            onChange={(e)=>setForm({...form,name:e.target.value})}
+          />
+        )}
 
         <input
-          placeholder="Hospital License Number"
-          className="w-full border p-3 mb-3 rounded"
-          onChange={(e)=>setForm({...form,licenseNumber:e.target.value})}
+          placeholder="Phone"
+          className="w-full border p-3 mb-3 rounded-lg"
+          onChange={(e)=>setForm({...form,phone:e.target.value})}
         />
 
-      )}
+        <input
+          placeholder="Email"
+          className="w-full border p-3 mb-3 rounded-lg"
+          onChange={(e)=>setForm({...form,email:e.target.value})}
+        />
 
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full border p-3 mb-3 rounded-lg"
+          onChange={(e)=>setForm({...form,password:e.target.value})}
+        />
 
-      <input
-        placeholder="City"
-        className="w-full border p-3 mb-3 rounded"
-        value={form.city}
-        onChange={(e)=>setForm({...form,city:e.target.value})}
-      />
+        {/* DONOR */}
+        {accountType === "user" && (
+          <label className="flex items-center gap-2 mb-3 text-gray-700">
+            <input
+              type="checkbox"
+              checked={form.isDonor}
+              onChange={(e)=>setForm({...form,isDonor:e.target.checked})}
+            />
+            Become a Blood Donor 🩸
+          </label>
+        )}
 
+        {/* BLOOD GROUP */}
+        {form.isDonor && accountType === "user" && (
+          <select
+            className="w-full border p-3 mb-3 rounded-lg"
+            onChange={(e)=>setForm({...form,bloodGroup:e.target.value})}
+          >
+            <option value="">Blood Group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+          </select>
+        )}
 
-      <input
-        placeholder="Area"
-        className="w-full border p-3 mb-3 rounded"
-        value={form.area}
-        onChange={(e)=>setForm({...form,area:e.target.value})}
-      />
+        {/* LICENSE */}
+        {accountType === "hospital" && (
+          <input
+            placeholder="Hospital License Number"
+            className="w-full border p-3 mb-3 rounded-lg"
+            onChange={(e)=>setForm({...form,licenseNumber:e.target.value})}
+          />
+        )}
 
+        <input
+          placeholder="City"
+          className="w-full border p-3 mb-3 rounded-lg"
+          value={form.city}
+          onChange={(e)=>setForm({...form,city:e.target.value})}
+        />
 
-      <button
-        type="button"
-        onClick={getLocation}
-        className="w-full bg-blue-500 text-white py-2 rounded mb-3"
-      >
-        Detect My Location 📍
-      </button>
+        <input
+          placeholder="Area"
+          className="w-full border p-3 mb-3 rounded-lg"
+          value={form.area}
+          onChange={(e)=>setForm({...form,area:e.target.value})}
+        />
 
+        {/* LOCATION BUTTON */}
+        <button
+          type="button"
+          onClick={getLocation}
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg mb-3 transition"
+        >
+          Detect My Location 📍
+        </button>
 
-      <button className="w-full bg-red-600 text-white py-3 rounded-lg">
-        Register
-      </button>
+        {/* REGISTER */}
+        <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition">
+          Register 🚀
+        </button>
+        {/* LOGIN REDIRECT */}
+<p className="text-center text-sm text-gray-500 mt-4">
+  Already have an account?{" "}
+  <span
+    onClick={() => navigate("/login")}
+    className="text-red-500 cursor-pointer font-semibold hover:underline"
+  >
+    Login
+  </span>
+</p>
 
-    </form>
-
+      </form>
+    </div>
   </div>
-
-  )
+)
 
 }

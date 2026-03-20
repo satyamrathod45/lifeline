@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useAuth } from "../context/AuthContext"
 import api from "../services/api"
+import bg from '../assets/image.png'
 
 export default function Login() {
 
@@ -48,39 +49,55 @@ export default function Login() {
 
   }
 
-  return (
+return (
 
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-red-100 via-white to-blue-100">
 
+    <div className="flex bg-white shadow-2xl rounded-2xl overflow-hidden w-[850px]">
+
+      {/* LEFT IMAGE */}
+      <div className="w-1/2 hidden md:flex items-center justify-center bg-red-50">
+
+        <img
+          src={bg} // 👈 put your generated image here
+          alt="login visual"
+          className="w-[80%]"
+        />
+
+      </div>
+
+      {/* FORM */}
       <motion.form
         onSubmit={handleLogin}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white p-8 rounded-xl shadow-md w-[400px]"
+        className="w-full md:w-1/2 p-8"
       >
 
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Login
+        <h2 className="text-3xl font-bold mb-2 text-center text-red-600">
+          Welcome Back ❤️
         </h2>
 
-        {/* ROLE SELECT */}
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Login to continue saving lives 🩸
+        </p>
 
+        {/* ROLE SELECT */}
         <select
           value={role}
           onChange={(e)=>setRole(e.target.value)}
-          className="w-full border p-3 mb-4 rounded"
+          className="w-full border p-3 mb-4 rounded-lg focus:ring-2 focus:ring-red-400"
         >
           <option value="user">User</option>
           <option value="hospital">Hospital</option>
         </select>
-
 
         <input
           type="text"
           placeholder="Phone"
           value={phone}
           required
-          className="w-full border p-3 mb-4 rounded"
+          className="w-full border p-3 mb-4 rounded-lg"
           onChange={(e) => setPhone(e.target.value)}
         />
 
@@ -89,19 +106,31 @@ export default function Login() {
           placeholder="Password"
           value={password}
           required
-          className="w-full border p-3 mb-4 rounded"
+          className="w-full border p-3 mb-4 rounded-lg"
           onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           disabled={loading}
-          className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition"
+          className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? "Logging in..." : "Login 🚀"}
         </button>
+
+        {/* EXTRA TOUCH */}
+        <p className="text-center text-sm text-gray-500 mt-4">
+          New here? <span
+            onClick={()=>navigate("/register")}
+            className="text-red-500 cursor-pointer font-semibold"
+          >
+            Create account
+          </span>
+        </p>
 
       </motion.form>
 
     </div>
-  )
+
+  </div>
+)
 }
