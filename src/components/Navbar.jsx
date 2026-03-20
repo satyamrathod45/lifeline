@@ -6,254 +6,193 @@ import { useAuth } from "../context/AuthContext"
 
 export default function Navbar() {
 
-  const [menuOpen,setMenuOpen] = useState(false)
-
-  const { user,setUser } = useAuth()
-
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { user, setUser } = useAuth()
   const location = useLocation()
 
-  const handleLogout = () => {
-    setUser(null)
-  }
+  const handleLogout = () => setUser(null)
 
-const navLinks = [
-  {name:"Home",path:"/"},
-  {name:"Find Donor",path:"/search"},
-  {name:"Request Blood",path:"/request"},
-  {name:"Requests",path:"/requests"},
-  {name:"About",path:"/about"}
-]
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Find Donor", path: "/search" },
+    { name: "Request Blood", path: "/request" },
+    { name: "Requests", path: "/requests" },
+    { name: "About", path: "/about" }
+  ]
 
   return (
-
-<header className="w-full bg-white/80 backdrop-blur-lg border-b sticky top-0 z-50">
-
-<div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-
-
-
-<Link
-to="/"
-className="flex items-center gap-2 text-2xl font-bold text-red-600"
->
-
-<motion.div
-animate={{scale:[1,1.15,1]}}
-transition={{repeat:Infinity,duration:2}}
->
-
-<HeartPulse size={28}/>
-
-</motion.div>
-
-LifeLine
-
-</Link>
-
-
-
-{/* Desktop Navigation */}
-
-<nav className="hidden md:flex gap-10 text-gray-700 font-medium">
-
-{navLinks.map((link)=>{
-
-const active = location.pathname === link.path
-
-return(
-
-<Link
-key={link.path}
-to={link.path}
-className="relative group"
->
-
-<span className={`${active ? "text-red-600" : ""}`}>
-
-{link.name}
-
-</span>
-
-{/* animated underline */}
-
-<motion.span
-layoutId="nav-underline"
-className={`absolute left-0 -bottom-1 h-[2px] bg-red-500 ${
-active ? "w-full" : "w-0 group-hover:w-full"
-} transition-all`}
-/>
-
-</Link>
-
-)
-
-})}
-
-</nav>
-
-
-
-{/* Desktop Auth */}
-
-<div className="hidden md:flex items-center gap-4">
-
-{user ? (
-
-<div className="flex items-center gap-4">
-
-<div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-full">
-
-<User size={18}/>
-
-<Link to={'/dashboard'} className="font-medium text-sm">
-
-{user.name}
-
-</Link>
-
-</div>
-
-<motion.button
-whileHover={{scale:1.05}}
-whileTap={{scale:0.95}}
-onClick={handleLogout}
-className="px-5 py-2 rounded-lg bg-red-600 text-white shadow-md"
->
-
-Logout
-
-</motion.button>
-
-</div>
-
-) : (
-
-<div className="flex gap-3">
-
-<Link to="/login">
-
-<motion.button
-whileHover={{scale:1.05}}
-className="px-5 py-2 rounded-lg border border-red-500 text-red-600"
->
-
-Login
-
-</motion.button>
-
-</Link>
-
-<Link to="/register">
-
-<motion.button
-whileHover={{scale:1.05}}
-className="px-5 py-2 rounded-lg bg-red-600 text-white shadow-md"
->
-
-Register
-
-</motion.button>
-
-</Link>
-
-</div>
-
-)}
-
-</div>
-
-
-
-{/* Mobile Menu Button */}
-
-<button
-onClick={()=>setMenuOpen(!menuOpen)}
-className="md:hidden"
->
-
-{menuOpen ? <X size={28}/> : <Menu size={28}/>}
-
-</button>
-
-</div>
-
-
-
-{/* Mobile Menu */}
-
-<AnimatePresence>
-
-{menuOpen && (
-
-<motion.div
-initial={{opacity:0,y:-20}}
-animate={{opacity:1,y:0}}
-exit={{opacity:0,y:-20}}
-className="md:hidden bg-white border-t shadow"
->
-
-<div className="flex flex-col gap-6 px-6 py-6 text-gray-700 font-medium">
-
-{navLinks.map((link)=>(
-
-<Link
-key={link.path}
-onClick={()=>setMenuOpen(false)}
-to={link.path}
-className="hover:text-red-600"
->
-
-{link.name}
-
-</Link>
-
-))}
-
-
-{user ? (
-
-<button
-onClick={()=>{
-handleLogout()
-setMenuOpen(false)
-}}
-className="bg-red-600 text-white py-2 rounded-lg"
->
-
-Logout
-
-</button>
-
-) : (
-
-<>
-
-<Link onClick={()=>setMenuOpen(false)} to="/login">
-
-Login
-
-</Link>
-
-<Link onClick={()=>setMenuOpen(false)} to="/register">
-
-Register
-
-</Link>
-
-</>
-
-)}
-
-</div>
-
-</motion.div>
-
-)}
-
-</AnimatePresence>
-
-</header>
-
+    <header className="w-full sticky top-0 z-50 backdrop-blur-xl bg-white/60 border-b border-white/20 shadow-md">
+
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
+
+          <motion.div
+            animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+            className="text-red-500"
+          >
+            <HeartPulse size={30} />
+          </motion.div>
+
+          <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+            LifeLine
+          </span>
+
+        </Link>
+
+
+        {/* DESKTOP NAV */}
+        <nav className="hidden md:flex gap-10 font-medium">
+
+          {navLinks.map((link) => {
+            const active = location.pathname === link.path
+
+            return (
+              <Link key={link.path} to={link.path} className="relative group">
+
+                <motion.span
+                  whileHover={{ y: -2 }}
+                  className={`transition ${active ? "text-red-500" : "text-gray-700"}`}
+                >
+                  {link.name}
+                </motion.span>
+
+                {/* UNDERLINE */}
+                <motion.div
+                  layoutId="nav-pill"
+                  className={`absolute left-0 -bottom-1 h-[3px] rounded-full bg-gradient-to-r from-red-500 to-pink-500 ${
+                    active ? "w-full" : "w-0 group-hover:w-full"
+                  } transition-all duration-300`}
+                />
+
+              </Link>
+            )
+          })}
+
+        </nav>
+
+
+        {/* AUTH */}
+        <div className="hidden md:flex items-center gap-4">
+
+          {user ? (
+            <div className="flex items-center gap-4">
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-2 bg-white/70 px-4 py-2 rounded-full shadow"
+              >
+                <User size={18} />
+                <Link to="/dashboard" className="text-sm font-medium">
+                  {user.name}
+                </Link>
+              </motion.div>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleLogout}
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg"
+              >
+                Logout
+              </motion.button>
+
+            </div>
+          ) : (
+            <div className="flex gap-3">
+
+              <Link to="/login">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  className="px-5 py-2 rounded-full border border-red-400 text-red-500"
+                >
+                  Login
+                </motion.button>
+              </Link>
+
+              <Link to="/register">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  className="px-5 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg"
+                >
+                  Register
+                </motion.button>
+              </Link>
+
+            </div>
+          )}
+
+        </div>
+
+
+        {/* MOBILE BUTTON */}
+        <motion.button
+          whileTap={{ scale: 0.8 }}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden"
+        >
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+        </motion.button>
+
+      </div>
+
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            className="md:hidden bg-white/80 backdrop-blur-xl border-t shadow-lg"
+          >
+
+            <div className="flex flex-col gap-6 px-6 py-6 font-medium">
+
+              {navLinks.map((link) => (
+                <motion.div
+                  key={link.path}
+                  whileHover={{ x: 10 }}
+                >
+                  <Link
+                    to={link.path}
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-red-500"
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+
+              {user ? (
+                <button
+                  onClick={() => {
+                    handleLogout()
+                    setMenuOpen(false)
+                  }}
+                  className="bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 rounded-full"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link onClick={() => setMenuOpen(false)} to="/login">
+                    Login
+                  </Link>
+                  <Link onClick={() => setMenuOpen(false)} to="/register">
+                    Register
+                  </Link>
+                </>
+              )}
+
+            </div>
+
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+    </header>
   )
-
 }

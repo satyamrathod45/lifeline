@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
+import { AnimatePresence, motion } from "framer-motion"
+
 import Navbar from "./components/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
 
@@ -9,13 +11,28 @@ import Register from "./pages/Register"
 import SearchDonor from "./pages/SearchDonor"
 import BecomeDonor from "./pages/BecomeDonor"
 import RequestDonor from "./components/RequestDonor"
-// import RequestInfo from "./pages/RequestInfo"
 import RequestInfo from "./pages/RequestInfo"
 import Dashboard from "./pages/Dashboard"
 import About from "./pages/About"
 import Footer from "./components/Footer"
 import RequestsDashboard from "./components/EmergencyRequest"
-import { useLocation } from "react-router-dom"
+
+/* =========================
+   PAGE WRAPPER (INLINE)
+========================= */
+function PageWrapper({ children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -40, scale: 0.98 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="will-change-transform"
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 function App() {
 
@@ -27,48 +44,82 @@ function App() {
 
   return (
 
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
 
+      {/* Navbar */}
       {!hideLayout && <Navbar />}
 
-      <Routes>
+      {/* 🔥 ANIMATED ROUTES */}
+      <AnimatePresence mode="wait">
 
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Routes location={location} key={location.pathname}>
 
-        <Route path="/become-donor" element={
-          <ProtectedRoute><BecomeDonor/></ProtectedRoute>
-        }/>
+          {/* Public Routes */}
+          <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
 
-        <Route path="/search" element={<SearchDonor />} />
+          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
 
-        <Route path="/requests" element={
-          <ProtectedRoute><RequestsDashboard/></ProtectedRoute>
-        }/>
+          <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
 
-        <Route path="/request/:id" element={
-          <ProtectedRoute><RequestInfo/></ProtectedRoute>
-        }/>
+          <Route path="/search" element={<PageWrapper><SearchDonor /></PageWrapper>} />
 
-        <Route path="/about" element={<About />} />
+          <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
 
-        {/* Protected */}
-        <Route path="/request" element={
-          <ProtectedRoute><RequestDonor /></ProtectedRoute>
-        }/>
+          {/* Protected Routes */}
+          <Route
+            path="/become-donor"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><BecomeDonor /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/dashboard" element={
-          <ProtectedRoute><Dashboard /></ProtectedRoute>
-        }/>
+          <Route
+            path="/requests"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><RequestsDashboard /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
 
-      </Routes>
+          <Route
+            path="/request/:id"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><RequestInfo /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
 
-      {/* 🔥 Footer hidden on login/register */}
+          <Route
+            path="/request"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><RequestDonor /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><Dashboard /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+
+        </Routes>
+
+      </AnimatePresence>
+
+      {/* Footer */}
       {!hideLayout && <Footer />}
 
     </div>
   )
 }
+
 export default App
