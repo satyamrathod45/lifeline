@@ -15,9 +15,11 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Find Donor", path: "/search" },
+     {name: "Find Hospital" , path: "/find-hospital"},
     { name: "Request Blood", path: "/request" },
     { name: "Requests", path: "/requests" },
-    { name: "About", path: "/about" }
+    { name: "About", path: "/about" },
+   
   ]
 
   return (

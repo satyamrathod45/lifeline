@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard"
 import About from "./pages/About"
 import Footer from "./components/Footer"
 import RequestsDashboard from "./components/EmergencyRequest"
+import FindHospital from "./pages/SearchHospital"
 
 /* =========================
    PAGE WRAPPER (INLINE)
@@ -64,6 +65,7 @@ function App() {
           <Route path="/search" element={<PageWrapper><SearchDonor /></PageWrapper>} />
 
           <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+          <Route path="/find-hospital" element={<PageWrapper><FindHospital /></PageWrapper>} />
 
           {/* Protected Routes */}
           <Route
