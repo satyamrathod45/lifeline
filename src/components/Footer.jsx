@@ -60,7 +60,7 @@ export default function Footer() {
 
 
         {/* Social Section */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}>
+        {/* <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}>
           <h3 className="text-white font-semibold mb-4">Connect</h3>
 
           <div className="flex gap-4">
@@ -93,7 +93,7 @@ export default function Footer() {
             </motion.a>
 
           </div>
-        </motion.div>
+        </motion.div> */}
 
       </div>
 

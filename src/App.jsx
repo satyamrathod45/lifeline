@@ -17,6 +17,7 @@ import About from "./pages/About"
 import Footer from "./components/Footer"
 import RequestsDashboard from "./components/EmergencyRequest"
 import FindHospital from "./pages/SearchHospital"
+import AdminDashboard from "./pages/AdminDashboard"
 
 /* =========================
    PAGE WRAPPER (INLINE)
@@ -41,7 +42,8 @@ function App() {
 
   const hideLayout =
     location.pathname === "/login" ||
-    location.pathname === "/register"
+    location.pathname === "/register" ||
+    location.pathname === "/admin"
 
   return (
 
@@ -113,7 +115,18 @@ function App() {
             }
           />
 
+                    <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <PageWrapper><AdminDashboard /></PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
+
+        
 
       </AnimatePresence>
 
