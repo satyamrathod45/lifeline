@@ -95,34 +95,6 @@ export default function AdminDashboard() {
   };
 
   // 🏥 CREATE HOSPITAL
-  const handleCreateHospital = async () => {
-    try {
-      if (!hospitalData.coordinates) {
-        alert("Please select location 📍");
-        return;
-      }
-
-      await api.post("/admin/create-hospital", hospitalData);
-
-      setHospitalData({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        licenseNumber: "",
-        city: "",
-        area: "",
-        address: "",
-        coordinates: null,
-      });
-
-      fetchHospitals();
-      alert("Hospital created successfully ✅");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div className="flex min-h-screen bg-gray-100">
 
@@ -131,7 +103,7 @@ export default function AdminDashboard() {
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
 
         <ul className="space-y-3">
-          {["users", "hospitals", "create"].map((tab) => (
+          {["users", "hospitals"].map((tab) => (
             <li
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -286,41 +258,7 @@ export default function AdminDashboard() {
       </tbody>
     </table>
   </div>
-)}
-        {/* CREATE HOSPITAL */}
-        {activeTab === "create" && (
-          <div className="bg-white p-6 rounded-2xl shadow-lg w-[450px]">
-            <h2 className="text-xl font-semibold mb-4">Create Hospital</h2>
-
-            {Object.keys(hospitalData).map((key) => (
-              key !== "coordinates" && (
-                <input
-                  key={key}
-                  placeholder={key}
-                  type={key === "password" ? "password" : "text"}
-                  className="w-full border p-3 mb-3 rounded-lg"
-                  value={hospitalData[key]}
-                  onChange={(e) => setHospitalData({ ...hospitalData, [key]: e.target.value })}
-                />
-              )
-            ))}
-
-            <button onClick={detectLocation} className="w-full bg-blue-600 text-white py-2 rounded mb-2">
-              Detect Location 📍
-            </button>
-
-            {hospitalData.coordinates && (
-              <p className="text-sm mb-2">📍 {hospitalData.coordinates[1]}, {hospitalData.coordinates[0]}</p>
-            )}
-
-            <button
-              onClick={handleCreateHospital}
-              className="w-full bg-green-600 text-white py-3 rounded-lg"
-            >
-              Create Hospital
-            </button>
-          </div>
-        )}
+)}  
       </div>
     </div>
   );

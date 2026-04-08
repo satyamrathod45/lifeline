@@ -14,11 +14,12 @@ export default function Login() {
   const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
 
-  // forgot password states
+  // Forgot password states
   const [showForgot, setShowForgot] = useState(false);
   const [email, setEmail] = useState("");
   const [emailLoading, setEmailLoading] = useState(false);
 
+  // 🔐 LOGIN HANDLER
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -30,24 +31,34 @@ export default function Login() {
         role,
       });
 
-      setUser(res.data.user);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      const userData = res.data.user;
 
-      if (res.data.user.role === "admin") {
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+
+      // 🚀 Role-based navigation
+
+      if (userData.role !== role) {
+  alert("Invalid role selected 😑");
+  return;
+}
+      if (userData.role === "admin") {
         navigate("/admin");
-      } else if (res.data.user.role === "hospital") {
+      } else if (userData.role === "hospital") {
         navigate("/hospital-dashboard");
       } else {
         navigate("/");
       }
+
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      alert(error.response?.data?.message || "Login failed 😑");
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔥 Forgot password handler
+  // 📩 FORGOT PASSWORD
   const handleForgotPassword = async () => {
     if (!email) return alert("Enter email first 😑");
 
@@ -55,7 +66,7 @@ export default function Login() {
 
     try {
       const res = await api.post("/auth/forgot-password", { email });
-      alert(res.data.message || "Reset link sent to your email 📩");
+      alert(res.data.message || "Reset link sent 📩");
       setShowForgot(false);
       setEmail("");
     } catch (error) {
@@ -68,6 +79,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-red-100 via-white to-blue-100">
       <div className="flex bg-white shadow-2xl rounded-2xl overflow-hidden w-[850px]">
+
         {/* LEFT IMAGE */}
         <div className="w-1/2 hidden md:flex items-center justify-center bg-red-50">
           <img src={bg} alt="login visual" className="w-[80%]" />
@@ -85,10 +97,10 @@ export default function Login() {
           </h2>
 
           <p className="text-center text-gray-500 mb-6 text-sm">
-            Login to continue saving lives 🩸
+            Login to continue 🚀
           </p>
 
-          {/* ROLE */}
+          {/* 👇 ROLE SELECT (UPDATED) */}
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -96,8 +108,10 @@ export default function Login() {
           >
             <option value="user">User</option>
             <option value="hospital">Hospital</option>
+            <option value="admin">Admin</option> {/* 🔥 ADDED */}
           </select>
 
+          {/* PHONE */}
           <input
             type="text"
             placeholder="Phone"
@@ -107,6 +121,7 @@ export default function Login() {
             onChange={(e) => setPhone(e.target.value)}
           />
 
+          {/* PASSWORD */}
           <input
             type="password"
             placeholder="Password"
@@ -116,7 +131,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {/* 👇 Forgot Password */}
+          {/* FORGOT PASSWORD */}
           <p
             onClick={() => setShowForgot(true)}
             className="text-right text-sm text-red-500 cursor-pointer mb-4 hover:underline"
@@ -124,6 +139,7 @@ export default function Login() {
             Forgot Password?
           </p>
 
+          {/* LOGIN BUTTON */}
           <button
             disabled={loading}
             className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
@@ -131,6 +147,7 @@ export default function Login() {
             {loading ? "Logging in..." : "Login 🚀"}
           </button>
 
+          {/* REGISTER */}
           <p className="text-center text-sm text-gray-500 mt-4">
             New here?{" "}
             <span
@@ -143,10 +160,11 @@ export default function Login() {
         </motion.form>
       </div>
 
-      {/* 🔥 FORGOT PASSWORD MODAL */}
+      {/* 🔐 FORGOT PASSWORD MODAL */}
       {showForgot && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-white p-6 rounded-xl w-[350px] shadow-lg">
+
             <h3 className="text-xl font-bold mb-3 text-center">
               Reset Password 🔐
             </h3>
